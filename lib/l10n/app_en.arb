@@ -1,0 +1,12 @@
+{
+  "insertNewExpensesWIthTheButtonBelow" : "Insert new expenses with the button below!",
+  "title": "Title",
+  "amount": "Amount",
+  "expense": "Expense",
+  "selectDate": "Select Date",
+  "selectCategory": "Select Category",
+  "addExpense": "Add Expense",
+  "allExpenses": "All Expenses",
+  "logInWithGoogle": "Log in with Google",
+  "welcomeToExpenso": "Welcome to Expenso"
+}

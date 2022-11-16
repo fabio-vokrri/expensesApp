@@ -1,0 +1,13 @@
+{
+  "helloWorld": "Ciao Mondo!",
+  "insertNewExpensesWIthTheButtonBelow" : "Inserisci nuova spesa con il tasto sotto",
+  "title": "Titolo",
+  "amount": "Importo",
+  "expense": "Spesa",
+  "selectDate": "Seleziona Data",
+  "selectCategory": "Seleziona Categoria",
+  "addExpense": "Aggiungi Spesa",
+  "allExpenses": "Tutte le spese",
+  "logInWithGoogle": "Accedi con Google",
+  "welcomeToExpenso": "Benvenuto ad Expenso"
+}
