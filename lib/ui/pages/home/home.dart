@@ -22,6 +22,7 @@ class HomePage extends StatelessWidget {
         title: Text("Ciao, ${user.displayName}"),
         actions: [
           GestureDetector(
+            // shows settings banner
             onTap: () {
               showDialog(
                 context: context,
@@ -31,6 +32,7 @@ class HomePage extends StatelessWidget {
               );
             },
             child: CircleAvatar(
+              // user's profile image
               backgroundImage: NetworkImage(
                 user.photoURL!,
               ),
@@ -40,9 +42,11 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: StreamBuilder(
+        // listens to changes on the database and updates the UI consequently
         stream: DataBaseModel.getSnapshot,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData && snapshot.data!.size == 0) {
+            // if there's no data returns a message
             return Center(
               child: Text(
                 AppLocalizations.of(context)!
@@ -58,15 +62,22 @@ class HomePage extends StatelessWidget {
               child: Text("Something went wrong!"),
             );
           } else {
+            // if there's data return the UI implementation
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // overview banner where there is general expense data
+                const Expanded(
+                  flex: 1,
+                  child: SizedBox(),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(AppLocalizations.of(context)!.allExpenses),
+                      // sort button to sort the expense data
                       IconButton(
                         onPressed: () {},
                         icon: const Icon(Icons.sort_rounded),
@@ -74,9 +85,12 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                 ),
+                // the card view for each expense fetched from the database
                 Expanded(
                   flex: 2,
                   child: ListView(
+                    // transforms the JSON data into Expense model
+                    // and return the card UI for every expense
                     children: snapshot.data!.docs.map(
                       (DocumentSnapshot document) {
                         return ExpenseCard(
@@ -94,6 +108,7 @@ class HomePage extends StatelessWidget {
           }
         },
       ),
+      // floating action button to add new expenses to database
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(

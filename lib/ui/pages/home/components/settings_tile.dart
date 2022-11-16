@@ -5,28 +5,22 @@ class SettingsTile extends StatelessWidget {
     Key? key,
     required this.title,
     required this.icon,
-    required this.onPressed,
+    required this.function,
   }) : super(key: key);
   final String title;
   final Icon icon;
-  final Function()? onPressed;
+  final Function()? function;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
+    return GestureDetector(
+      onTap: function,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Text(title),
             icon,
           ],
         ),

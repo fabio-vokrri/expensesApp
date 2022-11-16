@@ -13,25 +13,22 @@ class DeleteAccountDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
-      title: const Text(
-        "Are you sure you want to delete the account?",
-      ),
+      title: const Text("Warning!"),
+      content: const Text("Are you sure you want to delete the account?"),
       actions: [
         ElevatedButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text(
-            "Cancel",
-          ),
+          child: const Text("Cancel"),
         ),
         ElevatedButton(
           onPressed: UserModel.deleteAccount,
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
           ),
-          child: const Text(
+          child: Text(
             "Yes, delete account",
             style: TextStyle(
-              color: Colors.black,
+              color: Colors.red[900],
               fontWeight: FontWeight.bold,
             ),
           ),

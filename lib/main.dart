@@ -10,10 +10,6 @@ import "package:provider/provider.dart";
 
 void main(List<String> args) async {
   // forces device orientation to portrait only
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
 
   // initializes FireBase
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +17,10 @@ void main(List<String> args) async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   // runs main frame
   runApp(const ExpensesApp());
 }
@@ -42,11 +42,9 @@ class ExpensesApp extends StatelessWidget {
         return MaterialApp(
           title: "Expenso",
           debugShowCheckedModeBanner: false,
-          // internationalization
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           locale: languageProvider.getLocale,
-          // theme
           theme: themeProvider.getTheme,
           home: const RootPage(),
         );

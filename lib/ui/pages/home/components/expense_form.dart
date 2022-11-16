@@ -36,8 +36,10 @@ class _ExpenseFormState extends State<ExpenseForm> {
     });
   }
 
+  // validates the form fields and creates a new expense to add to the database
   _validateAndAddToDatabase() {
     if (_formKey.currentState!.validate()) {
+      // creates new expense
       final ExpenseModel expense = ExpenseModel(
         title: _titleController.text.isEmpty
             ? AppLocalizations.of(context)!.expense
@@ -47,8 +49,10 @@ class _ExpenseFormState extends State<ExpenseForm> {
         type: _type.toType(),
       );
 
+      // adds expense to database
       DataBaseModel.addExpense(expense);
 
+      // pops context to return to home page
       Navigator.pop(context);
     }
   }
@@ -120,9 +124,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
             ElevatedButton.icon(
               icon: const Icon(Icons.add),
               label: const Text("Add Expense"),
-              onPressed: () {
-                _validateAndAddToDatabase();
-              },
+              onPressed: _validateAndAddToDatabase,
             )
           ],
         ),

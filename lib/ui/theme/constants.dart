@@ -1,4 +1,4 @@
 import "package:flutter/material.dart";
 
 const Color lightPrimaryColor = Colors.blue;
-Color darkPrimaryColor = Colors.blue.shade800;
+Color darkPrimaryColor = Colors.blue[900]!;

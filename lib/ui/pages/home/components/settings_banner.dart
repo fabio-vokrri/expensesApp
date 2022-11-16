@@ -46,16 +46,17 @@ class SettingsBanner extends StatelessWidget {
                   backgroundImage: NetworkImage(user.photoURL!),
                 ),
                 const SizedBox(width: 16.0),
-                RichText(
-                  text: TextSpan(
-                    text: "${user.displayName}\n",
-                    children: [
-                      TextSpan(
-                        text: user.email,
-                        style: const TextStyle(color: Colors.grey, height: 2),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(user.displayName!),
+                    Text(
+                      user.email!,
+                      style: const TextStyle(
+                        color: Colors.grey,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 const Spacer(),
                 IconButton(
@@ -75,17 +76,17 @@ class SettingsBanner extends StatelessWidget {
             SettingsTile(
               title: "Change Theme: ",
               icon: const Icon(Icons.sunny),
-              onPressed: () => themeProvider.toggleTheme(),
+              function: () => themeProvider.toggleTheme(),
             ),
             SettingsTile(
               title: "Change Language: ",
               icon: const Icon(Icons.language),
-              onPressed: () => languageProvider.toggleLanguage(),
+              function: () => languageProvider.toggleLanguage(),
             ),
             SettingsTile(
               title: "Delete Account: ",
               icon: const Icon(Icons.person_remove_rounded),
-              onPressed: () {
+              function: () {
                 showDialog(
                   context: context,
                   builder: (context) {
@@ -97,7 +98,7 @@ class SettingsBanner extends StatelessWidget {
             const Spacer(),
             const Text(
               "Made with 🖤 by Fabio Vokrri",
-              style: TextStyle(color: Colors.grey, fontSize: 12.0),
+              style: TextStyle(color: Colors.grey, fontSize: 8.0),
             ),
           ],
         ),
