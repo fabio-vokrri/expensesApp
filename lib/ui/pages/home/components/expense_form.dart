@@ -1,6 +1,7 @@
-import "package:expenses/data/models/database_model.dart";
 import "package:expenses/data/models/expense_model.dart";
-import "package:expenses/extensions/string_extension.dart";
+import 'package:expenses/data/providers/database_provider.dart';
+import 'package:expenses/extensions/capitalize_extension.dart';
+import 'package:expenses/extensions/type_extension.dart';
 import "package:flutter/material.dart";
 import "package:flutter_gen/gen_l10n/app_localizations.dart";
 import "package:intl/intl.dart";
@@ -43,7 +44,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
       final ExpenseModel expense = ExpenseModel(
         title: _titleController.text.isEmpty
             ? AppLocalizations.of(context)!.expense
-            : _titleController.text,
+            : _titleController.text.capitalize(),
         amount: double.parse(_amountController.text),
         date: _date ?? DateTime.now(),
         type: _type.toType(),
@@ -59,6 +60,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations locale = AppLocalizations.of(context)!;
+
     return Container(
       height: MediaQuery.of(context).size.height * 0.75,
       padding: const EdgeInsets.all(16.0),
@@ -68,17 +71,21 @@ class _ExpenseFormState extends State<ExpenseForm> {
           children: [
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(labelText: "Title"),
+              decoration: InputDecoration(
+                labelText: locale.title,
+              ),
             ),
             const SizedBox(height: 16.0),
             TextFormField(
               controller: _amountController,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: "Amount",
+              decoration: InputDecoration(
+                labelText: locale.amount,
               ),
               validator: (value) {
-                if (value == null || value.isEmpty) return "Insert Amount";
+                if (value == null || value.isEmpty) {
+                  return locale.insertAmount;
+                }
                 return null;
               },
             ),
@@ -88,7 +95,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                 Text(
                   _date != null
                       ? DateFormat.yMMMMd("it").format(_date!)
-                      : "Select Date",
+                      : locale.selectDate,
                 ),
                 const Spacer(),
                 IconButton(
@@ -100,7 +107,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
             const SizedBox(height: 16.0),
             Row(
               children: [
-                const Text("Select Category"),
+                Text(locale.selectCategory),
                 const Spacer(),
                 DropdownButton(
                   items: ExpenseType.values
@@ -123,7 +130,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
             const SizedBox(height: 32.0),
             ElevatedButton.icon(
               icon: const Icon(Icons.add),
-              label: const Text("Add Expense"),
+              label: Text(locale.addExpense),
               onPressed: _validateAndAddToDatabase,
             )
           ],

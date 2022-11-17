@@ -9,18 +9,18 @@ import "package:flutter_gen/gen_l10n/app_localizations.dart";
 import "package:provider/provider.dart";
 
 void main(List<String> args) async {
-  // forces device orientation to portrait only
-
   // initializes FireBase
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // forces device orientation to portrait only
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
   // runs main frame
   runApp(const ExpensesApp());
 }

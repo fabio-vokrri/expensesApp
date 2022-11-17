@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ErrorPage extends StatelessWidget {
   const ErrorPage({super.key, required this.error});
@@ -6,8 +7,12 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text("Some error occurred!")),
+    return Scaffold(
+      body: Center(
+        child: Text(
+          AppLocalizations.of(context)!.somethingWentWrong,
+        ),
+      ),
     );
   }
 }

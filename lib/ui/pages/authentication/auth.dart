@@ -11,6 +11,10 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LanguageProvider languageProvider = context.watch<LanguageProvider>();
+    final AppLocalizations locale = AppLocalizations.of(context)!;
+
+    const String walletAssetLocation = "assets/images/google.png";
+    const String googleAssetLocation = "assets/images/google.png";
 
     return Scaffold(
       body: Padding(
@@ -20,12 +24,12 @@ class AuthPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.asset(
-              "assets/images/wallet.png",
+              walletAssetLocation,
               height: 100,
             ),
             const SizedBox(height: 32.0),
             Text(
-              AppLocalizations.of(context)!.welcomeToExpenso,
+              locale.welcomeToExpenso,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -36,9 +40,9 @@ class AuthPage extends StatelessWidget {
               onPressed: () async {
                 await UserModel.signInWithGoogle();
               },
-              label: Text(AppLocalizations.of(context)!.logInWithGoogle),
+              label: Text(locale.logInWithGoogle),
               icon: Image.asset(
-                "assets/images/google.png",
+                googleAssetLocation,
                 height: 16.0,
               ),
             ),

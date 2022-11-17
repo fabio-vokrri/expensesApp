@@ -1,5 +1,6 @@
+
 import "package:cloud_firestore/cloud_firestore.dart";
-import "package:expenses/extensions/string_extension.dart";
+import 'package:expenses/extensions/type_extension.dart';
 import "package:flutter/material.dart";
 
 enum ExpenseType {

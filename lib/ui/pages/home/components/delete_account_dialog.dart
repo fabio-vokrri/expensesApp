@@ -1,5 +1,6 @@
 import 'package:expenses/data/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeleteAccountDialog extends StatelessWidget {
   const DeleteAccountDialog({
@@ -8,17 +9,22 @@ class DeleteAccountDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations locale = AppLocalizations.of(context)!;
+
     return AlertDialog(
+      insetPadding: const EdgeInsets.only(bottom: 128.0),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
-      title: const Text("Warning!"),
-      content: const Text("Are you sure you want to delete the account?"),
+      title: Text(locale.warning),
+      content: Text(
+        locale.areYouSureYouWantToDeleteThisAccount,
+      ),
       actions: [
         ElevatedButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text("Cancel"),
+          child: Text(locale.cancel),
         ),
         ElevatedButton(
           onPressed: UserModel.deleteAccount,
@@ -26,7 +32,7 @@ class DeleteAccountDialog extends StatelessWidget {
             backgroundColor: Colors.red,
           ),
           child: Text(
-            "Yes, delete account",
+            locale.yesDeleteAccount,
             style: TextStyle(
               color: Colors.red[900],
               fontWeight: FontWeight.bold,

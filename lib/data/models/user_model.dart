@@ -1,4 +1,4 @@
-import 'package:expenses/data/models/database_model.dart';
+import 'package:expenses/data/providers/database_provider.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import "package:google_sign_in/google_sign_in.dart";
 

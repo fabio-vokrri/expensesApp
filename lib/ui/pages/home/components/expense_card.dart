@@ -1,5 +1,5 @@
-import "package:expenses/data/models/database_model.dart";
 import "package:expenses/data/models/expense_model.dart";
+import 'package:expenses/data/providers/database_provider.dart';
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
 
@@ -27,7 +27,7 @@ class ExpenseCard extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(25),
+            color: Colors.black.withAlpha(12),
             blurRadius: 8,
             offset: const Offset(8, 8),
           ),

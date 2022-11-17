@@ -1,8 +1,9 @@
 import "package:cloud_firestore/cloud_firestore.dart";
-import "package:expenses/data/models/database_model.dart";
-import "package:expenses/data/models/expense_model.dart";
-import "package:expenses/ui/pages/home/components/expense_card.dart";
+import 'package:expenses/data/models/expense_model.dart';
+import 'package:expenses/data/providers/database_provider.dart';
+import 'package:expenses/ui/pages/home/components/expense_card.dart';
 import "package:expenses/ui/pages/home/components/expense_form.dart";
+import 'package:expenses/ui/pages/home/components/overview_banner.dart';
 import "package:expenses/ui/pages/home/components/settings_banner.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
@@ -14,6 +15,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User user = FirebaseAuth.instance.currentUser!;
+    final AppLocalizations locale = AppLocalizations.of(context)!;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -49,8 +51,7 @@ class HomePage extends StatelessWidget {
             // if there's no data returns a message
             return Center(
               child: Text(
-                AppLocalizations.of(context)!
-                    .insertNewExpensesWIthTheButtonBelow,
+                locale.insertNewExpensesWIthTheButtonBelow,
               ),
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
@@ -58,8 +59,8 @@ class HomePage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
-            return const Center(
-              child: Text("Something went wrong!"),
+            return Center(
+              child: Text(locale.somethingWentWrong),
             );
           } else {
             // if there's data return the UI implementation
@@ -69,14 +70,14 @@ class HomePage extends StatelessWidget {
                 // overview banner where there is general expense data
                 const Expanded(
                   flex: 1,
-                  child: SizedBox(),
+                  child: OverViewBanner(),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(AppLocalizations.of(context)!.allExpenses),
+                      Text(locale.allExpenses),
                       // sort button to sort the expense data
                       IconButton(
                         onPressed: () {},
@@ -88,19 +89,14 @@ class HomePage extends StatelessWidget {
                 // the card view for each expense fetched from the database
                 Expanded(
                   flex: 2,
-                  child: ListView(
-                    // transforms the JSON data into Expense model
-                    // and return the card UI for every expense
-                    children: snapshot.data!.docs.map(
-                      (DocumentSnapshot document) {
-                        return ExpenseCard(
-                          expense: ExpenseModel.fromFirestore(
-                            document as DocumentSnapshot<Map<String, dynamic>>,
-                            null,
-                          ),
-                        );
-                      },
-                    ).toList(),
+                  child: ListView.builder(
+                    itemCount: snapshot.data!.size,
+                    itemBuilder: (context, index) {
+                      final List<ExpenseModel> expenses =
+                          DataBaseModel.getExpenseList(snapshot);
+
+                      return ExpenseCard(expense: expenses[index]);
+                    },
                   ),
                 ),
               ],

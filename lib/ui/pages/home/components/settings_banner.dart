@@ -5,6 +5,7 @@ import 'package:expenses/ui/pages/home/components/delete_account_dialog.dart';
 import "package:expenses/ui/pages/home/components/settings_tile.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import "package:provider/provider.dart";
 
 class SettingsBanner extends StatelessWidget {
@@ -15,8 +16,11 @@ class SettingsBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User user = FirebaseAuth.instance.currentUser!;
+    final AppLocalizations locale = AppLocalizations.of(context)!;
+
     final ThemeProvider themeProvider = context.watch<ThemeProvider>();
     final LanguageProvider languageProvider = context.watch<LanguageProvider>();
+
     final double height = MediaQuery.of(context).size.height * 0.5;
 
     return Dialog(
@@ -67,6 +71,7 @@ class SettingsBanner extends StatelessWidget {
                   icon: const Icon(
                     Icons.exit_to_app_rounded,
                   ),
+                  tooltip: locale.exit,
                 ),
               ],
             ),
@@ -74,17 +79,17 @@ class SettingsBanner extends StatelessWidget {
               height: 32,
             ),
             SettingsTile(
-              title: "Change Theme: ",
+              title: locale.changeTheme,
               icon: const Icon(Icons.sunny),
               function: () => themeProvider.toggleTheme(),
             ),
             SettingsTile(
-              title: "Change Language: ",
+              title: locale.changeLanguage,
               icon: const Icon(Icons.language),
               function: () => languageProvider.toggleLanguage(),
             ),
             SettingsTile(
-              title: "Delete Account: ",
+              title: locale.deleteAccount,
               icon: const Icon(Icons.person_remove_rounded),
               function: () {
                 showDialog(
@@ -98,7 +103,7 @@ class SettingsBanner extends StatelessWidget {
             const Spacer(),
             const Text(
               "Made with 🖤 by Fabio Vokrri",
-              style: TextStyle(color: Colors.grey, fontSize: 8.0),
+              style: TextStyle(color: Colors.grey, fontSize: 10.0),
             ),
           ],
         ),
