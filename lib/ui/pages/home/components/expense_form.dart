@@ -1,7 +1,9 @@
 import "package:expenses/data/models/expense_model.dart";
 import 'package:expenses/data/providers/database_provider.dart';
 import 'package:expenses/extensions/capitalize_extension.dart';
+import 'package:expenses/extensions/translate_type_extension.dart';
 import 'package:expenses/extensions/type_extension.dart';
+import 'package:expenses/ui/theme/constants.dart';
 import "package:flutter/material.dart";
 import "package:flutter_gen/gen_l10n/app_localizations.dart";
 import "package:intl/intl.dart";
@@ -28,7 +30,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2022),
+      firstDate: DateTime(2000),
       lastDate: DateTime.now(),
     );
 
@@ -51,7 +53,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
       );
 
       // adds expense to database
-      DataBaseModel.addExpense(expense);
+      DataBaseProvider.addExpense(expense);
 
       // pops context to return to home page
       Navigator.pop(context);
@@ -61,10 +63,11 @@ class _ExpenseFormState extends State<ExpenseForm> {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations locale = AppLocalizations.of(context)!;
+    final double height = MediaQuery.of(context).size.height * 0.75;
 
     return Container(
-      height: MediaQuery.of(context).size.height * 0.75,
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(constSpace),
+      height: height,
       child: Form(
         key: _formKey,
         child: Column(
@@ -75,13 +78,11 @@ class _ExpenseFormState extends State<ExpenseForm> {
                 labelText: locale.title,
               ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: constSpace),
             TextFormField(
               controller: _amountController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: locale.amount,
-              ),
+              decoration: InputDecoration(labelText: locale.amount),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return locale.insertAmount;
@@ -89,12 +90,12 @@ class _ExpenseFormState extends State<ExpenseForm> {
                 return null;
               },
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: constSpace),
             Row(
               children: [
                 Text(
                   _date != null
-                      ? DateFormat.yMMMMd("it").format(_date!)
+                      ? DateFormat.yMMMMd(locale.localeName).format(_date!)
                       : locale.selectDate,
                 ),
                 const Spacer(),
@@ -104,7 +105,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                 ),
               ],
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: constSpace),
             Row(
               children: [
                 Text(locale.selectCategory),
@@ -112,9 +113,16 @@ class _ExpenseFormState extends State<ExpenseForm> {
                 DropdownButton(
                   items: ExpenseType.values
                       .map(
-                        (e) => DropdownMenuItem(
-                          value: e.name,
-                          child: Text(e.name),
+                        (expenseTypeValue) => DropdownMenuItem(
+                          value: expenseTypeValue.name,
+                          child: Text(
+                            locale.localeName == "it"
+                                ? expenseTypeValue.name
+                                    .translateType()
+                                    .capitalize()
+                                : expenseTypeValue.name.capitalize(),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ),
                       )
                       .toList(),
@@ -127,7 +135,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                 ),
               ],
             ),
-            const SizedBox(height: 32.0),
+            const SizedBox(height: constSpace * 2),
             ElevatedButton.icon(
               icon: const Icon(Icons.add),
               label: Text(locale.addExpense),

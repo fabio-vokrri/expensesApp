@@ -1,6 +1,8 @@
 import "package:expenses/data/models/expense_model.dart";
 import 'package:expenses/data/providers/database_provider.dart';
+import 'package:expenses/ui/theme/constants.dart';
 import "package:flutter/material.dart";
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import "package:intl/intl.dart";
 
 class ExpenseCard extends StatelessWidget {
@@ -13,21 +15,23 @@ class ExpenseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations locale = AppLocalizations.of(context)!;
+    final ThemeData theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.only(
-        bottom: 16.0,
-        right: 16.0,
+        bottom: constSpace,
+        right: constSpace,
       ),
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(constSpace),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(16),
-          topRight: Radius.circular(16),
+          bottomRight: Radius.circular(constRadius),
+          topRight: Radius.circular(constRadius),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(12),
+            color: Colors.black.withAlpha(25),
             blurRadius: 8,
             offset: const Offset(8, 8),
           ),
@@ -37,11 +41,11 @@ class ExpenseCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CircleAvatar(
-            backgroundColor: Colors.blue,
-            foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+            backgroundColor: theme.colorScheme.primary,
+            foregroundColor: theme.scaffoldBackgroundColor,
             child: Icon(expense.getIcon),
           ),
-          const SizedBox(width: 16.0),
+          const SizedBox(width: constSpace),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +58,7 @@ class ExpenseCard extends StatelessWidget {
                 ),
               ),
               Text(
-                DateFormat.yMd("it").format(expense.date),
+                DateFormat.yMd(locale.localeName).format(expense.date),
                 style: const TextStyle(
                   color: Colors.grey,
                 ),
@@ -69,9 +73,9 @@ class ExpenseCard extends StatelessWidget {
               fontSize: 16,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: constSpace),
           IconButton(
-            onPressed: () => DataBaseModel.removeExpense(expense),
+            onPressed: () => DataBaseProvider.removeExpense(expense),
             icon: const Icon(Icons.delete),
           ),
         ],

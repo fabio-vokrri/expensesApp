@@ -11,6 +11,7 @@ class ErrorPage extends StatelessWidget {
       body: Center(
         child: Text(
           AppLocalizations.of(context)!.somethingWentWrong,
+          style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
     );

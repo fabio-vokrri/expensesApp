@@ -1,4 +1,3 @@
-
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:expenses/extensions/type_extension.dart';
 import "package:flutter/material.dart";
@@ -58,6 +57,15 @@ class ExpenseModel {
 
   IconData? get getIcon {
     return _iconMap[type.name];
+  }
+
+  bool get isThisMonth {
+    return date.month == DateTime.now().month &&
+        date.year == DateTime.now().year;
+  }
+
+  bool get isThisYear {
+    return date.year == DateTime.now().year;
   }
 
   @override

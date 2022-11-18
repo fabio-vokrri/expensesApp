@@ -22,7 +22,7 @@ class OverviewProgressBar extends CustomPainter {
       ..color = color;
 
     double percentageToRadians(double percentage) {
-      return (percentage * 2 * pi) / 100;
+      return (percentage * 2 * pi);
     }
 
     final Paint paint2 = Paint()

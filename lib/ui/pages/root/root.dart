@@ -1,12 +1,16 @@
 import "package:expenses/ui/pages/pages.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class RootPage extends StatelessWidget {
   const RootPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // removes the splash screen
+    FlutterNativeSplash.remove();
+
     // listens to auth changes and reroutes the frame
     return StreamBuilder(
       stream: FirebaseAuth.instance.authStateChanges(),

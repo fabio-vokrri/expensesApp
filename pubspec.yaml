@@ -36,6 +36,18 @@ dependencies:
   firebase_auth: ^4.1.2
   cloud_firestore: ^4.0.5
   shared_preferences: ^2.0.15
+  flutter_native_splash: ^2.2.14
+
+flutter_native_splash:
+  color: "#4CAF50"
+  color_dark: "#4CAF50"
+  image: assets/images/icon.png
+  android_12:
+    color: "#4CAF50"
+    color_dark: "#4CAF50"
+    image: assets/images/icon.png
+    icon_background_color: "#4CAF50"
+
 
 dev_dependencies:
   flutter_test:

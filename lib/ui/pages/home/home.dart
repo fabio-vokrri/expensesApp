@@ -5,6 +5,7 @@ import 'package:expenses/ui/pages/home/components/expense_card.dart';
 import "package:expenses/ui/pages/home/components/expense_form.dart";
 import 'package:expenses/ui/pages/home/components/overview_banner.dart';
 import "package:expenses/ui/pages/home/components/settings_banner.dart";
+import 'package:expenses/ui/theme/constants.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 import "package:flutter_gen/gen_l10n/app_localizations.dart";
@@ -35,17 +36,18 @@ class HomePage extends StatelessWidget {
             },
             child: CircleAvatar(
               // user's profile image
+              backgroundColor: Theme.of(context).colorScheme.primary,
               backgroundImage: NetworkImage(
                 user.photoURL!,
               ),
             ),
           ),
-          const SizedBox(width: 16.0),
+          const SizedBox(width: constSpace),
         ],
       ),
       body: StreamBuilder(
         // listens to changes on the database and updates the UI consequently
-        stream: DataBaseModel.getSnapshot,
+        stream: DataBaseProvider.getSnapshot,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData && snapshot.data!.size == 0) {
             // if there's no data returns a message
@@ -63,17 +65,22 @@ class HomePage extends StatelessWidget {
               child: Text(locale.somethingWentWrong),
             );
           } else {
+            // removes the splash screen
+            // FlutterNativeSplash.remove();
+
             // if there's data return the UI implementation
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // overview banner where there is general expense data
-                const Expanded(
+                Expanded(
                   flex: 1,
-                  child: OverViewBanner(),
+                  child: OverViewBanner(
+                    snapshot: snapshot,
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(constSpace),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -93,7 +100,7 @@ class HomePage extends StatelessWidget {
                     itemCount: snapshot.data!.size,
                     itemBuilder: (context, index) {
                       final List<ExpenseModel> expenses =
-                          DataBaseModel.getExpenseList(snapshot);
+                          DataBaseProvider.getExpenseList(snapshot);
 
                       return ExpenseCard(expense: expenses[index]);
                     },
@@ -112,8 +119,8 @@ class HomePage extends StatelessWidget {
             isScrollControlled: true,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16.0),
-                topRight: Radius.circular(16.0),
+                topLeft: Radius.circular(constRadius),
+                topRight: Radius.circular(constRadius),
               ),
             ),
             builder: (context) {

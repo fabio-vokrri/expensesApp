@@ -7,8 +7,30 @@ ThemeData getLightTheme() {
 
   return base.copyWith(
     useMaterial3: true,
-    textTheme: GoogleFonts.latoTextTheme(),
-    cardColor: lightPrimaryColor,
+    colorScheme: const ColorScheme.light(primary: lightPrimaryColor),
+    textTheme: GoogleFonts.latoTextTheme(
+      const TextTheme(
+        bodyMedium: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+        bodySmall: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+        titleLarge: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+        labelLarge: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+    ),
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
   );

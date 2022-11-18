@@ -3,7 +3,7 @@ import "package:expenses/data/models/expense_model.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import 'package:flutter/widgets.dart';
 
-class DataBaseModel {
+class DataBaseProvider {
   static final _userId = FirebaseAuth.instance.currentUser!.uid;
   static final collection = FirebaseFirestore.instance.collection(_userId);
 
@@ -31,9 +31,8 @@ class DataBaseModel {
         element as QueryDocumentSnapshot<Map<String, dynamic>>,
         null,
       );
-      if (expense.date.month == DateTime.now().month) {
-        return previousValue += expense.amount;
-      }
+
+      if (expense.isThisMonth) return previousValue += expense.amount;
       return previousValue;
     });
   }
@@ -46,9 +45,7 @@ class DataBaseModel {
         null,
       );
 
-      if (expense.date.year == DateTime.now().year) {
-        return previousValue += expense.amount;
-      }
+      if (expense.isThisYear) return previousValue += expense.amount;
       return previousValue;
     });
   }

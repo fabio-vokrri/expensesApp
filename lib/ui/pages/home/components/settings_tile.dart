@@ -1,3 +1,4 @@
+import 'package:expenses/ui/theme/constants.dart';
 import "package:flutter/material.dart";
 
 class SettingsTile extends StatelessWidget {
@@ -16,7 +17,7 @@ class SettingsTile extends StatelessWidget {
     return GestureDetector(
       onTap: function,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: constSpace),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

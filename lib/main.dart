@@ -6,11 +6,16 @@ import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import "package:flutter_gen/gen_l10n/app_localizations.dart";
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import "package:provider/provider.dart";
 
 void main(List<String> args) async {
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  
+  // initializes splash screen
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   // initializes FireBase
-  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

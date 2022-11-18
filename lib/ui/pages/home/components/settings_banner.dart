@@ -1,8 +1,9 @@
-import "package:expenses/data/models/user_model.dart";
 import "package:expenses/data/providers/language_provider.dart";
 import "package:expenses/data/providers/theme_provider.dart";
+import 'package:expenses/data/providers/user_provider.dart';
 import 'package:expenses/ui/pages/home/components/delete_account_dialog.dart';
 import "package:expenses/ui/pages/home/components/settings_tile.dart";
+import 'package:expenses/ui/theme/constants.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -25,20 +26,20 @@ class SettingsBanner extends StatelessWidget {
 
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
+        borderRadius: BorderRadius.circular(constRadius),
       ),
       alignment: Alignment.topCenter,
       insetPadding: const EdgeInsets.only(
-        top: 64.0,
-        left: 16.0,
-        right: 16.0,
+        top: constSpace * 4,
+        left: constSpace,
+        right: constSpace,
       ),
       child: Container(
         height: height,
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(constSpace),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: BorderRadius.circular(constRadius),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,19 +47,17 @@ class SettingsBanner extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  radius: 32,
+                  radius: constRadius * 2,
                   backgroundImage: NetworkImage(user.photoURL!),
                 ),
-                const SizedBox(width: 16.0),
+                const SizedBox(width: constSpace),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(user.displayName!),
                     Text(
                       user.email!,
-                      style: const TextStyle(
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
@@ -66,7 +65,7 @@ class SettingsBanner extends StatelessWidget {
                 IconButton(
                   onPressed: () async {
                     Navigator.pop(context);
-                    await UserModel.signOut();
+                    await UserProvider.signOut();
                   },
                   icon: const Icon(
                     Icons.exit_to_app_rounded,
@@ -76,7 +75,7 @@ class SettingsBanner extends StatelessWidget {
               ],
             ),
             const Divider(
-              height: 32,
+              height: constSpace * 2,
             ),
             SettingsTile(
               title: locale.changeTheme,

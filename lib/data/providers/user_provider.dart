@@ -2,7 +2,7 @@ import 'package:expenses/data/providers/database_provider.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import "package:google_sign_in/google_sign_in.dart";
 
-class UserModel {
+class UserProvider {
   static Future<UserCredential> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     if (googleUser == null) throw FirebaseAuthException;
@@ -24,7 +24,7 @@ class UserModel {
   }
 
   static Future<void> deleteAccount() async {
-    DataBaseModel.collection.get().then((value) {
+    DataBaseProvider.collection.get().then((value) {
       for (var element in value.docs) {
         element.reference.delete();
       }
