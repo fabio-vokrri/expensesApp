@@ -32,14 +32,10 @@ class HomePage extends StatelessWidget {
                 builder: (context) => const SettingsBanner(),
               );
             },
-            child: SizedBox(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(constRadius * 8),
-                child: Image.network(
-                  user.photoURL!,
-                  fit: BoxFit.cover,
-                ),
-              ),
+            child: CircleAvatar(
+              radius: constRadius,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundImage: NetworkImage(user.photoURL!),
             ),
             // child: CircleAvatar(backgroundImage: NetworkImage(user.photoURL!)),
           ),
