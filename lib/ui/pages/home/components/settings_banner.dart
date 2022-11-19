@@ -47,17 +47,22 @@ class SettingsBanner extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  radius: constRadius * 2,
+                  radius: constRadius * 1.5,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                   backgroundImage: NetworkImage(user.photoURL!),
                 ),
                 const SizedBox(width: constSpace),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(user.displayName!),
+                    Text(
+                      user.displayName!,
+                      overflow: TextOverflow.fade,
+                    ),
                     Text(
                       user.email!,
                       style: const TextStyle(color: Colors.grey),
+                      overflow: TextOverflow.fade,
                     ),
                   ],
                 ),
@@ -67,15 +72,15 @@ class SettingsBanner extends StatelessWidget {
                     Navigator.pop(context);
                     await UserProvider.signOut();
                   },
-                  icon: const Icon(
-                    Icons.exit_to_app_rounded,
-                  ),
+                  icon: const Icon(Icons.exit_to_app_rounded),
                   tooltip: locale.exit,
                 ),
               ],
             ),
-            const Divider(
+            Divider(
               height: constSpace * 2,
+              thickness: 1,
+              color: Theme.of(context).colorScheme.primary,
             ),
             SettingsTile(
               title: locale.changeTheme,

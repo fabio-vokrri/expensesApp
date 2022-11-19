@@ -39,13 +39,13 @@ class AuthPage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  locale.toKeepTrackOfYourExpenses,
+                  locale.keepTrackOfYourExpenses,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: constSpace),
+                const SizedBox(height: constSpace * 2),
                 ElevatedButton.icon(
                   onPressed: () async => await UserProvider.signInWithGoogle(),
                   icon: Image.asset(

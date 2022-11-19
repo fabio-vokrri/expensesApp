@@ -37,6 +37,7 @@ dependencies:
   cloud_firestore: ^4.0.5
   shared_preferences: ^2.0.15
   flutter_native_splash: ^2.2.14
+  flutter_displaymode: ^0.4.1
 
 flutter_native_splash:
   color: "#4CAF50"

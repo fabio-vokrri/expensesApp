@@ -7,7 +7,10 @@ ThemeData getDarkTheme() {
 
   return base.copyWith(
     useMaterial3: true,
-    colorScheme: ColorScheme.dark(primary: darkPrimaryColor),
+    colorScheme: const ColorScheme.dark(
+      primary: darkPrimaryColor,
+      error: darkErrorColorBackground,
+    ),
     textTheme: GoogleFonts.latoTextTheme(
       const TextTheme(
         bodyMedium: TextStyle(
@@ -15,10 +18,10 @@ ThemeData getDarkTheme() {
           fontWeight: FontWeight.bold,
           fontSize: 16,
         ),
-        bodySmall: TextStyle(
+        headlineSmall: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 16,
+          fontSize: 20,
         ),
         titleLarge: TextStyle(
           color: Colors.white,
@@ -26,12 +29,25 @@ ThemeData getDarkTheme() {
           fontSize: 20,
         ),
         labelLarge: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+        labelSmall: TextStyle(
+          color: Colors.white,
+          letterSpacing: 0.1,
           fontWeight: FontWeight.bold,
           fontSize: 16,
         ),
       ),
     ),
-    cardColor: darkPrimaryColor,
+    inputDecorationTheme: const InputDecorationTheme(
+      labelStyle: TextStyle(fontWeight: FontWeight.bold),
+      errorStyle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
     scaffoldBackgroundColor: Colors.grey[900],
     appBarTheme: AppBarTheme(backgroundColor: Colors.grey[900]),
   );

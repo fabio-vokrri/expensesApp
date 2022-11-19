@@ -1,15 +1,16 @@
 {
-  "insertNewExpensesWIthTheButtonBelow" : "Insert new expenses with the button below!",
+  "noExpensesToShow": "No expenses to show",
+  "insertNewExpensesWithTheButtonBelow" : "Insert new expenses with the button below!",
   "title": "Title",
   "amount": "Amount",
   "insertAmount": "Insert amount",
   "expense": "Expense",
-  "selectDate": "Select Date",
-  "selectCategory": "Select Category",
+  "date": "Date",
+  "category": "Category",
   "addExpense": "Add Expense",
-  "allExpenses": "All Expenses",
+  "allExpenses": "All Expenses:",
   "logInWithGoogle": "Log in with Google",
-  "welcomeToExpenso": "Welcome to Expenso",
+  "welcomeToExpenso": "Welcome to EXPENSO",
   "thisMonthYouSpent": "This month you spent:",
   "thisYearYouSpent": "This year you spent:",
   "somethingWentWrong": "Something went wrong",
@@ -18,8 +19,10 @@
   "deleteAccount": "Delete account",
   "warning": "Warning!",
   "areYouSureYouWantToDeleteThisAccount": "Are you sure you want to delete this account?",
+  "areYouSureYouWantToDeleteThisExpense": "Are you sure you want to delete this expense?",
   "cancel": "Cancel",
   "yesDeleteAccount": "Yes, delete account",
+  "yesDeleteExpense": "Yes, delete expense",
   "exit": "Exit",
-  "toKeepTrackOfYourExpenses": "to keep track of your expenses"
+  "keepTrackOfYourExpenses": "Keep track of your expenses"
 }

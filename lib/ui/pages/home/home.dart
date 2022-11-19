@@ -29,18 +29,19 @@ class HomePage extends StatelessWidget {
             onTap: () {
               showDialog(
                 context: context,
-                builder: (context) {
-                  return const SettingsBanner();
-                },
+                builder: (context) => const SettingsBanner(),
               );
             },
-            child: CircleAvatar(
-              // user's profile image
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              backgroundImage: NetworkImage(
-                user.photoURL!,
+            child: SizedBox(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(constRadius * 8),
+                child: Image.network(
+                  user.photoURL!,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
+            // child: CircleAvatar(backgroundImage: NetworkImage(user.photoURL!)),
           ),
           const SizedBox(width: constSpace),
         ],
@@ -52,22 +53,24 @@ class HomePage extends StatelessWidget {
           if (snapshot.hasData && snapshot.data!.size == 0) {
             // if there's no data returns a message
             return Center(
-              child: Text(
-                locale.insertNewExpensesWIthTheButtonBelow,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(Icons.shopping_cart_outlined, size: 64),
+                  const SizedBox(height: constSpace),
+                  Text(locale.noExpensesToShow),
+                  Text(locale.insertNewExpensesWithTheButtonBelow),
+                ],
               ),
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(
               child: Text(locale.somethingWentWrong),
             );
           } else {
-            // removes the splash screen
-            // FlutterNativeSplash.remove();
-
             // if there's data return the UI implementation
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,23 +78,11 @@ class HomePage extends StatelessWidget {
                 // overview banner where there is general expense data
                 Expanded(
                   flex: 1,
-                  child: OverViewBanner(
-                    snapshot: snapshot,
-                  ),
+                  child: OverViewBanner(snapshot: snapshot),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(constSpace),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(locale.allExpenses),
-                      // sort button to sort the expense data
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.sort_rounded),
-                      ),
-                    ],
-                  ),
+                  child: Text(locale.allExpenses),
                 ),
                 // the card view for each expense fetched from the database
                 Expanded(

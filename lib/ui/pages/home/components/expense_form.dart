@@ -63,25 +63,41 @@ class _ExpenseFormState extends State<ExpenseForm> {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations locale = AppLocalizations.of(context)!;
-    final double height = MediaQuery.of(context).size.height * 0.75;
+    final Size size = MediaQuery.of(context).size;
+    final ThemeData theme = Theme.of(context);
 
     return Container(
       padding: const EdgeInsets.all(constSpace),
-      height: height,
+      height: size.height * 0.8,
       child: Form(
         key: _formKey,
         child: Column(
           children: [
+            Row(
+              children: [
+                const Spacer(),
+                Container(
+                  height: 4,
+                  width: size.width / 4,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(constRadius),
+                  ),
+                ),
+                const Spacer(),
+              ],
+            ),
+            const SizedBox(height: constSpace),
             TextFormField(
               controller: _titleController,
-              decoration: InputDecoration(
-                labelText: locale.title,
-              ),
+              style: theme.textTheme.labelSmall,
+              decoration: InputDecoration(labelText: locale.title),
             ),
             const SizedBox(height: constSpace),
             TextFormField(
               controller: _amountController,
               keyboardType: TextInputType.number,
+              style: theme.textTheme.labelSmall,
               decoration: InputDecoration(labelText: locale.amount),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -96,7 +112,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                 Text(
                   _date != null
                       ? DateFormat.yMMMMd(locale.localeName).format(_date!)
-                      : locale.selectDate,
+                      : locale.date,
                 ),
                 const Spacer(),
                 IconButton(
@@ -108,7 +124,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
             const SizedBox(height: constSpace),
             Row(
               children: [
-                Text(locale.selectCategory),
+                Text(locale.category),
                 const Spacer(),
                 DropdownButton(
                   items: ExpenseType.values
@@ -121,7 +137,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                                     .translateType()
                                     .capitalize()
                                 : expenseTypeValue.name.capitalize(),
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style: theme.textTheme.labelSmall,
                           ),
                         ),
                       )
