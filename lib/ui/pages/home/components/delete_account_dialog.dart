@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:expenses/data/providers/user_provider.dart';
 import 'package:expenses/ui/theme/constants.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +31,10 @@ class DeleteAccountDialog extends StatelessWidget {
           child: Text(locale.cancel),
         ),
         ElevatedButton(
-          onPressed: UserProvider.deleteAccount,
+          onPressed: () {
+            UserProvider.deleteAccount;
+            exit(0);
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.error,
           ),

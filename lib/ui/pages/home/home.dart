@@ -37,7 +37,6 @@ class HomePage extends StatelessWidget {
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundImage: NetworkImage(user.photoURL!),
             ),
-            // child: CircleAvatar(backgroundImage: NetworkImage(user.photoURL!)),
           ),
           const SizedBox(width: constSpace),
         ],

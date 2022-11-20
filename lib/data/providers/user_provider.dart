@@ -30,6 +30,7 @@ class UserProvider {
       }
     });
 
+    signOut();
     FirebaseAuth.instance.currentUser!.delete();
   }
 }
