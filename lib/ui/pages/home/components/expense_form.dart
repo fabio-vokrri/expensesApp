@@ -50,6 +50,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
         amount: double.parse(_amountController.text),
         date: _date ?? DateTime.now(),
         type: _type.toType(),
+        id: DateTime.now().microsecondsSinceEpoch,
       );
 
       // adds expense to database

@@ -1,7 +1,7 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:expenses/extensions/type_extension.dart';
 import "package:flutter/material.dart";
-import 'package:uuid/uuid.dart';
+import 'package:quiver/core.dart';
 
 enum ExpenseType {
   grocery,
@@ -13,7 +13,7 @@ enum ExpenseType {
 }
 
 class ExpenseModel {
-  final Uuid id = const Uuid();
+  final int id;
   final String? title;
   final double amount;
   final DateTime date;
@@ -24,6 +24,7 @@ class ExpenseModel {
     required this.amount,
     required this.date,
     required this.type,
+    required this.id,
   });
 
   Map<String, dynamic> toFirestore() {
@@ -32,6 +33,7 @@ class ExpenseModel {
       "amount": amount,
       "date": Timestamp.fromDate(date),
       "type": type.name,
+      "id": id,
     };
   }
 
@@ -41,11 +43,11 @@ class ExpenseModel {
   ) {
     final data = snapshot.data();
     return ExpenseModel(
-      title: data?["title"] as String,
-      amount: data?["amount"] as double,
-      date: (data?["date"] as Timestamp).toDate(),
-      type: (data?["type"] as String).toType(),
-    );
+        title: data?["title"] as String,
+        amount: data?["amount"] as double,
+        date: (data?["date"] as Timestamp).toDate(),
+        type: (data?["type"] as String).toType(),
+        id: data?["id"] as int);
   }
 
   final Map<String, IconData> _iconMap = {
@@ -71,17 +73,18 @@ class ExpenseModel {
   }
 
   @override
-  int get hashCode => date.microsecondsSinceEpoch;
+  int get hashCode => hash4(date, title, amount, type);
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    if (runtimeType != other.runtimeType) return false;
+    if (other.runtimeType != runtimeType) return false;
 
     return other is ExpenseModel &&
-        other.id == id &&
         other.title == title &&
         other.amount == amount &&
-        other.date == date;
+        other.date == date &&
+        other.type == type &&
+        other.id == id;
   }
 }

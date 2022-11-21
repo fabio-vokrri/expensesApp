@@ -52,21 +52,23 @@ class SettingsBanner extends StatelessWidget {
                   backgroundImage: NetworkImage(user.photoURL!),
                 ),
                 const SizedBox(width: constSpace),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      user.displayName!,
-                      overflow: TextOverflow.fade,
-                    ),
-                    Text(
-                      user.email!,
-                      style: const TextStyle(color: Colors.grey),
-                      overflow: TextOverflow.fade,
-                    ),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user.displayName!,
+                        overflow: TextOverflow.fade,
+                      ),
+                      Text(
+                        user.email!,
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 16),
+                        overflow: TextOverflow.fade,
+                      ),
+                    ],
+                  ),
                 ),
-                const Spacer(),
                 IconButton(
                   onPressed: () async {
                     Navigator.pop(context);

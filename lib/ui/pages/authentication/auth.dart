@@ -5,7 +5,6 @@ import "package:flutter_gen/gen_l10n/app_localizations.dart";
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class AuthPage extends StatelessWidget {
-  // static const String routeName = "/auth";
   const AuthPage({super.key});
 
   @override
