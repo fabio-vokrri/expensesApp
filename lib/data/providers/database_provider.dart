@@ -9,14 +9,12 @@ class DataBaseProvider {
 
   /// removes expense from firestore database
   static Future<void> removeExpense(ExpenseModel expense) async {
-    await collection.doc(expense.hashCode.toString()).delete();
+    await collection.doc(expense.id.toString()).delete();
   }
 
   /// adds new expense to firestore database
   static Future<void> addExpense(ExpenseModel expense) async {
-    await collection
-        .doc(expense.hashCode.toString())
-        .set(expense.toFirestore());
+    await collection.doc(expense.id.toString()).set(expense.toFirestore());
   }
 
   /// fetches data snapshot from firestore database

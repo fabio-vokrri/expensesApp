@@ -1,6 +1,7 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:expenses/extensions/type_extension.dart';
 import "package:flutter/material.dart";
+import 'package:uuid/uuid.dart';
 
 enum ExpenseType {
   grocery,
@@ -12,6 +13,7 @@ enum ExpenseType {
 }
 
 class ExpenseModel {
+  final Uuid id = const Uuid();
   final String? title;
   final double amount;
   final DateTime date;
@@ -77,6 +79,7 @@ class ExpenseModel {
     if (runtimeType != other.runtimeType) return false;
 
     return other is ExpenseModel &&
+        other.id == id &&
         other.title == title &&
         other.amount == amount &&
         other.date == date;
