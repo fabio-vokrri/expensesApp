@@ -1,7 +1,6 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:expenses/extensions/type_extension.dart';
 import "package:flutter/material.dart";
-import 'package:quiver/core.dart';
 
 enum ExpenseType {
   grocery,
@@ -73,7 +72,7 @@ class ExpenseModel {
   }
 
   @override
-  int get hashCode => hash4(date, title, amount, type);
+  int get hashCode => id;
 
   @override
   bool operator ==(Object other) {
