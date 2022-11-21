@@ -8,6 +8,7 @@
   "date": "Data",
   "category": "Categoria",
   "addExpense": "Aggiungi Spesa",
+  "modifyExpense": "Modifica Spesa",
   "allExpenses": "Tutte le spese:",
   "logInWithGoogle": "Accedi con Google",
   "welcomeToExpenso": "Benvenuto ad EXPENSO",

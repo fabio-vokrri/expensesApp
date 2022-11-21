@@ -11,7 +11,10 @@ import "package:intl/intl.dart";
 class ExpenseForm extends StatefulWidget {
   const ExpenseForm({
     Key? key,
+    this.expense,
   }) : super(key: key);
+
+  final ExpenseModel? expense;
 
   @override
   State<ExpenseForm> createState() => _ExpenseFormState();
@@ -19,13 +22,31 @@ class ExpenseForm extends StatefulWidget {
 
 class _ExpenseFormState extends State<ExpenseForm> {
   final _formKey = GlobalKey<FormState>();
+  late TextEditingController _titleController;
+  late TextEditingController _amountController;
+  late DateTime? _date;
+  late String _type;
 
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _amountController = TextEditingController();
+  @override
+  void initState() {
+    _titleController = TextEditingController(
+      text: widget.expense == null ? null : widget.expense!.title,
+    );
+    _amountController = TextEditingController(
+      text: widget.expense == null
+          ? null
+          : widget.expense!.amount.toStringAsFixed(2),
+    );
 
-  DateTime? _date;
-  String _type = ExpenseType.grocery.name;
+    _date = widget.expense == null ? null : widget.expense!.date;
+    _type = widget.expense == null
+        ? ExpenseType.grocery.name
+        : widget.expense!.type.name;
 
+    super.initState();
+  }
+
+  // picks the date
   _pickDate() async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -39,19 +60,34 @@ class _ExpenseFormState extends State<ExpenseForm> {
     });
   }
 
-  // validates the form fields and creates a new expense to add to the database
+  // validates the form fields and creates a new expense,
+  // or modifies the one passed as argument, to add to the database
   _validateAndAddToDatabase() {
     if (_formKey.currentState!.validate()) {
-      // creates new expense
-      final ExpenseModel expense = ExpenseModel(
-        title: _titleController.text.isEmpty
-            ? AppLocalizations.of(context)!.expense
-            : _titleController.text.capitalize(),
-        amount: double.parse(_amountController.text),
-        date: _date ?? DateTime.now(),
-        type: _type.toType(),
-        id: DateTime.now().microsecondsSinceEpoch,
-      );
+      final ExpenseModel expense;
+
+      if (widget.expense != null) {
+        // modifies the existing expense
+        expense = widget.expense!.copyWith(
+          title: _titleController.text.isEmpty
+              ? AppLocalizations.of(context)!.expense.capitalize()
+              : _titleController.text.capitalize(),
+          amount: double.parse(_amountController.text),
+          date: _date ?? DateTime.now(),
+          type: _type.toType(),
+        );
+      } else {
+        // creates new expense
+        expense = ExpenseModel(
+          title: _titleController.text.isEmpty
+              ? AppLocalizations.of(context)!.expense.capitalize()
+              : _titleController.text.capitalize(),
+          amount: double.parse(_amountController.text),
+          date: _date ?? DateTime.now(),
+          type: _type.toType(),
+          id: DateTime.now().microsecondsSinceEpoch,
+        );
+      }
 
       // adds expense to database
       DataBaseProvider.addExpense(expense);
@@ -155,7 +191,11 @@ class _ExpenseFormState extends State<ExpenseForm> {
             const SizedBox(height: constSpace * 2),
             ElevatedButton.icon(
               icon: const Icon(Icons.add),
-              label: Text(locale.addExpense),
+              label: Text(
+                widget.expense == null
+                    ? locale.addExpense
+                    : locale.modifyExpense,
+              ),
               onPressed: _validateAndAddToDatabase,
             )
           ],

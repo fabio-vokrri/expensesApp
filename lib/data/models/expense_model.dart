@@ -42,11 +42,12 @@ class ExpenseModel {
   ) {
     final data = snapshot.data();
     return ExpenseModel(
-        title: data?["title"] as String,
-        amount: data?["amount"] as double,
-        date: (data?["date"] as Timestamp).toDate(),
-        type: (data?["type"] as String).toType(),
-        id: data?["id"] as int);
+      title: data?["title"] as String,
+      amount: data?["amount"] as double,
+      date: (data?["date"] as Timestamp).toDate(),
+      type: (data?["type"] as String).toType(),
+      id: data?["id"] as int,
+    );
   }
 
   final Map<String, IconData> _iconMap = {
@@ -69,6 +70,21 @@ class ExpenseModel {
 
   bool get isThisYear {
     return date.year == DateTime.now().year;
+  }
+
+  ExpenseModel copyWith({
+    String? title,
+    double? amount,
+    DateTime? date,
+    ExpenseType? type,
+  }) {
+    return ExpenseModel(
+      title: title ?? this.title,
+      amount: amount ?? this.amount,
+      date: date ?? this.date,
+      type: type ?? this.type,
+      id: id,
+    );
   }
 
   @override

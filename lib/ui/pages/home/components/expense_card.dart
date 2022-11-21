@@ -1,5 +1,6 @@
 import "package:expenses/data/models/expense_model.dart";
 import 'package:expenses/ui/pages/home/components/delete_expense_dialog.dart';
+import 'package:expenses/ui/pages/home/components/expense_form.dart';
 import 'package:expenses/ui/theme/constants.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -74,6 +75,24 @@ class ExpenseCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: constSpace),
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(constRadius),
+                    topRight: Radius.circular(constRadius),
+                  ),
+                ),
+                builder: (context) {
+                  return ExpenseForm(expense: expense);
+                },
+              );
+            },
+            icon: const Icon(Icons.mode),
+          ),
           IconButton(
             onPressed: () {
               showDialog(

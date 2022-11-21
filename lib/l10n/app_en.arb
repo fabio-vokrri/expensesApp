@@ -8,6 +8,7 @@
   "date": "Date",
   "category": "Category",
   "addExpense": "Add Expense",
+  "modifyExpense": "Modify Expense",
   "allExpenses": "All Expenses:",
   "logInWithGoogle": "Log in with Google",
   "welcomeToExpenso": "Welcome to EXPENSO",
