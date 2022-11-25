@@ -32,8 +32,9 @@ class AuthPage extends StatelessWidget {
                 const SizedBox(height: constSpace * 16),
                 Text(
                   locale.welcomeToExpenso,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 32,
+                    fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

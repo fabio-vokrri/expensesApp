@@ -39,7 +39,7 @@ class OverviewProgressBar extends CustomPainter {
           height: size.height,
         ),
         3 * pi / 2,
-        percentageToRadians(percentage),
+        2 * pi - percentageToRadians(percentage),
         false,
       );
 

@@ -62,8 +62,10 @@ class SettingsBanner extends StatelessWidget {
                       ),
                       Text(
                         user.email!,
-                        style:
-                            const TextStyle(color: Colors.grey, fontSize: 16),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
                         overflow: TextOverflow.fade,
                       ),
                     ],
@@ -100,9 +102,7 @@ class SettingsBanner extends StatelessWidget {
               function: () {
                 showDialog(
                   context: context,
-                  builder: (context) {
-                    return const DeleteAccountDialog();
-                  },
+                  builder: (context) => const DeleteAccountDialog(),
                 );
               },
             ),

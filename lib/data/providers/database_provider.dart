@@ -26,11 +26,13 @@ class DataBaseProvider {
   static double getTotalThisMonth(AsyncSnapshot<QuerySnapshot> snapshot) {
     return snapshot.data!.docs.fold(0.0, (previousValue, element) {
       final ExpenseModel expense = ExpenseModel.fromFirestore(
-        element as QueryDocumentSnapshot<Map<String, dynamic>>,
-        null,
+        snapshot: element as QueryDocumentSnapshot<Map<String, dynamic>>,
       );
 
-      if (expense.isThisMonth) return previousValue += expense.amount;
+      if (expense.isThisMonth && expense.type == Type.loss) {
+        return previousValue += expense.amount;
+      }
+
       return previousValue;
     });
   }
@@ -39,11 +41,54 @@ class DataBaseProvider {
   static double getTotalThisYear(AsyncSnapshot<QuerySnapshot> snapshot) {
     return snapshot.data!.docs.fold(0.0, (previousValue, element) {
       final ExpenseModel expense = ExpenseModel.fromFirestore(
-        element as QueryDocumentSnapshot<Map<String, dynamic>>,
-        null,
+        snapshot: element as QueryDocumentSnapshot<Map<String, dynamic>>,
       );
 
-      if (expense.isThisYear) return previousValue += expense.amount;
+      if (expense.isThisYear && expense.type == Type.loss) {
+        return previousValue += expense.amount;
+      }
+
+      return previousValue;
+    });
+  }
+
+  static double getTotalOfCategory(
+    AsyncSnapshot<QuerySnapshot> snapshot,
+    Category category,
+  ) {
+    return snapshot.data!.docs.fold(0.0, (previousValue, element) {
+      final ExpenseModel expense = ExpenseModel.fromFirestore(
+        snapshot: element as QueryDocumentSnapshot<Map<String, dynamic>>,
+      );
+
+      if (expense.isThisMonth && expense.category == category) {
+        return previousValue += expense.amount;
+      }
+      return previousValue;
+    });
+  }
+
+  /// returns the total amount of money available to be spent
+  static double getBudget(AsyncSnapshot<QuerySnapshot> snapshot) {
+    return snapshot.data!.docs.fold(0.0, (previousValue, element) {
+      final ExpenseModel expense = ExpenseModel.fromFirestore(
+        snapshot: element as QueryDocumentSnapshot<Map<String, dynamic>>,
+      );
+
+      if (expense.type == Type.gain) return previousValue += expense.amount;
+      return previousValue -= expense.amount;
+    });
+  }
+
+  static double getGained(AsyncSnapshot<QuerySnapshot> snapshot) {
+    return snapshot.data!.docs.fold(0.0, (previousValue, element) {
+      final ExpenseModel expense = ExpenseModel.fromFirestore(
+        snapshot: element as QueryDocumentSnapshot<Map<String, dynamic>>,
+      );
+
+      if (expense.isThisMonth && expense.type == Type.gain) {
+        return previousValue += expense.amount;
+      }
       return previousValue;
     });
   }
@@ -55,15 +100,11 @@ class DataBaseProvider {
     List<ExpenseModel> expenses = snapshot.data!.docs.map(
       (element) {
         return ExpenseModel.fromFirestore(
-          element as QueryDocumentSnapshot<Map<String, dynamic>>,
-          null,
+          snapshot: element as QueryDocumentSnapshot<Map<String, dynamic>>,
         );
       },
-    ).toList();
-
-    expenses.sort(
-      (a, b) => b.date.compareTo(a.date),
-    );
+    ).toList()
+      ..sort((a, b) => b.date.compareTo(a.date));
 
     return expenses;
   }

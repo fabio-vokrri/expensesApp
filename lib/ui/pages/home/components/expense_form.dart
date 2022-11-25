@@ -1,8 +1,8 @@
 import "package:expenses/data/models/expense_model.dart";
 import 'package:expenses/data/providers/database_provider.dart';
 import 'package:expenses/extensions/capitalize_extension.dart';
-import 'package:expenses/extensions/translate_type_extension.dart';
-import 'package:expenses/extensions/type_extension.dart';
+import 'package:expenses/extensions/category_extension.dart';
+import 'package:expenses/extensions/translate_category_extension.dart';
 import 'package:expenses/ui/theme/constants.dart';
 import "package:flutter/material.dart";
 import "package:flutter_gen/gen_l10n/app_localizations.dart";
@@ -12,9 +12,11 @@ class ExpenseForm extends StatefulWidget {
   const ExpenseForm({
     Key? key,
     this.expense,
+    required this.expenseType,
   }) : super(key: key);
 
   final ExpenseModel? expense;
+  final Type expenseType;
 
   @override
   State<ExpenseForm> createState() => _ExpenseFormState();
@@ -25,7 +27,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
   late TextEditingController _titleController;
   late TextEditingController _amountController;
   late DateTime? _date;
-  late String _type;
+  late String _category;
 
   @override
   void initState() {
@@ -39,9 +41,11 @@ class _ExpenseFormState extends State<ExpenseForm> {
     );
 
     _date = widget.expense == null ? null : widget.expense!.date;
-    _type = widget.expense == null
-        ? ExpenseType.grocery.name
-        : widget.expense!.type.name;
+    _category = widget.expense == null
+        ? widget.expenseType == Type.gain
+            ? Category.salary.name
+            : Category.grocery.name
+        : widget.expense!.category.name;
 
     super.initState();
   }
@@ -65,26 +69,33 @@ class _ExpenseFormState extends State<ExpenseForm> {
   _validateAndAddToDatabase() {
     if (_formKey.currentState!.validate()) {
       final ExpenseModel expense;
+      final AppLocalizations locale = AppLocalizations.of(context)!;
 
       if (widget.expense != null) {
         // modifies the existing expense
         expense = widget.expense!.copyWith(
           title: _titleController.text.isEmpty
-              ? AppLocalizations.of(context)!.expense.capitalize()
+              ? widget.expense!.type == Type.loss
+                  ? locale.expense.capitalize()
+                  : locale.gain.capitalize()
               : _titleController.text.capitalize(),
           amount: double.parse(_amountController.text),
           date: _date ?? DateTime.now(),
-          type: _type.toType(),
+          type: widget.expenseType,
+          category: _category.toCategory(),
         );
       } else {
         // creates new expense
         expense = ExpenseModel(
           title: _titleController.text.isEmpty
-              ? AppLocalizations.of(context)!.expense.capitalize()
+              ? widget.expenseType == Type.loss
+                  ? locale.expense.capitalize()
+                  : locale.gain.capitalize()
               : _titleController.text.capitalize(),
           amount: double.parse(_amountController.text),
           date: _date ?? DateTime.now(),
-          type: _type.toType(),
+          category: _category.toCategory(),
+          type: widget.expenseType,
           id: DateTime.now().microsecondsSinceEpoch,
         );
       }
@@ -137,9 +148,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
               style: theme.textTheme.labelSmall,
               decoration: InputDecoration(labelText: locale.amount),
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return locale.insertAmount;
-                }
+                if (value == null || value.isEmpty) return locale.insertAmount;
                 return null;
               },
             ),
@@ -158,32 +167,32 @@ class _ExpenseFormState extends State<ExpenseForm> {
                 ),
               ],
             ),
-            const SizedBox(height: constSpace),
+            const SizedBox(height: constSpace / 2),
             Row(
               children: [
                 Text(locale.category),
                 const Spacer(),
                 DropdownButton(
-                  items: ExpenseType.values
-                      .map(
-                        (expenseTypeValue) => DropdownMenuItem(
-                          value: expenseTypeValue.name,
-                          child: Text(
-                            locale.localeName == "it"
-                                ? expenseTypeValue.name
-                                    .translateType()
-                                    .capitalize()
-                                : expenseTypeValue.name.capitalize(),
-                            style: theme.textTheme.labelSmall,
-                          ),
+                  items: Category.values.where((element) {
+                    return element.type == widget.expenseType;
+                  }).map(
+                    (expenseCategoryValue) {
+                      return DropdownMenuItem(
+                        value: expenseCategoryValue.name,
+                        child: Text(
+                          locale.localeName == "it"
+                              ? expenseCategoryValue.name
+                                  .translateCategory()
+                                  .capitalize()
+                              : expenseCategoryValue.name.capitalize(),
+                          style: theme.textTheme.labelSmall,
                         ),
-                      )
-                      .toList(),
-                  value: _type,
+                      );
+                    },
+                  ).toList(),
+                  value: _category,
                   onChanged: (value) {
-                    setState(() {
-                      _type = value!;
-                    });
+                    setState(() => _category = value!);
                   },
                 ),
               ],
@@ -192,9 +201,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
             ElevatedButton.icon(
               icon: const Icon(Icons.add),
               label: Text(
-                widget.expense == null
-                    ? locale.addExpense
-                    : locale.modifyExpense,
+                "${widget.expense == null ? locale.add : locale.modify} ${widget.expenseType == Type.loss ? locale.expense : locale.gain}",
               ),
               onPressed: _validateAndAddToDatabase,
             )

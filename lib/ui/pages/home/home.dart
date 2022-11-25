@@ -2,12 +2,13 @@ import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:expenses/data/models/expense_model.dart';
 import 'package:expenses/data/providers/database_provider.dart';
 import 'package:expenses/ui/pages/home/components/expense_card.dart';
-import "package:expenses/ui/pages/home/components/expense_form.dart";
+import 'package:expenses/ui/pages/home/components/expense_form.dart';
 import 'package:expenses/ui/pages/home/components/overview_banner.dart';
 import "package:expenses/ui/pages/home/components/settings_banner.dart";
 import 'package:expenses/ui/theme/constants.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import "package:flutter_gen/gen_l10n/app_localizations.dart";
 
 class HomePage extends StatelessWidget {
@@ -17,6 +18,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final User user = FirebaseAuth.instance.currentUser!;
     final AppLocalizations locale = AppLocalizations.of(context)!;
+    final key = GlobalObjectKey<ExpandableFabState>(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -33,7 +35,7 @@ class HomePage extends StatelessWidget {
               );
             },
             child: CircleAvatar(
-              radius: constRadius,
+              radius: constRadius * 1.5,
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundImage: NetworkImage(user.photoURL!),
             ),
@@ -54,8 +56,14 @@ class HomePage extends StatelessWidget {
                 children: [
                   const Icon(Icons.shopping_cart_outlined, size: 64),
                   const SizedBox(height: constSpace),
-                  Text(locale.noExpensesToShow),
-                  Text(locale.insertNewExpensesWithTheButtonBelow),
+                  Text(
+                    locale.noExpensesToShow,
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    locale.insertNewExpensesWithTheButtonBelow,
+                    textAlign: TextAlign.center,
+                  ),
                 ],
               ),
             );
@@ -98,23 +106,54 @@ class HomePage extends StatelessWidget {
         },
       ),
       // floating action button to add new expenses to database
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(constRadius),
-                topRight: Radius.circular(constRadius),
-              ),
-            ),
-            builder: (context) {
-              return const ExpenseForm();
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: ExpandableFab(
+        key: key,
+        type: ExpandableFabType.up,
+        overlayStyle: ExpandableFabOverlayStyle(color: Colors.black45),
+        distance: 50,
+        children: [
+          FloatingActionButton.small(
+            heroTag: null,
+            child: const Icon(Icons.remove),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(constRadius),
+                    topRight: Radius.circular(constRadius),
+                  ),
+                ),
+                builder: (context) {
+                  return const ExpenseForm(expenseType: Type.loss);
+                },
+              );
+              key.currentState!.toggle();
             },
-          );
-        },
-        child: const Icon(Icons.add),
+          ),
+          FloatingActionButton.small(
+            heroTag: null,
+            child: const Icon(Icons.add),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(constRadius),
+                    topRight: Radius.circular(constRadius),
+                  ),
+                ),
+                builder: (context) {
+                  return const ExpenseForm(expenseType: Type.gain);
+                },
+              );
+              key.currentState!.toggle();
+            },
+          ),
+        ],
       ),
     );
   }
